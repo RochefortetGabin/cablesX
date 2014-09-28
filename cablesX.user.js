@@ -24,8 +24,11 @@ function stickyMenu(){
 function quotes(){
     var elems = document.querySelectorAll(".body a");
     for(var i = 0; i < elems.length; i++){
-        elems[i].onclick = null;
-        elems[i].addEventListener("click", showQuote);
+        console.log(elems[i].innerHTML);
+        if(elems[i].innerHTML.substr(0,8) == "&gt;&gt;"){
+            elems[i].onclick = null;
+            elems[i].addEventListener("click", showQuote);
+        }
     }
     elems = document.querySelectorAll(".mentioned a");
     for(i = 0; i < elems.length; i++){
