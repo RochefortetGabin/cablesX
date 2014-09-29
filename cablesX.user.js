@@ -24,7 +24,6 @@ function stickyMenu(){
 function quotes(){
     var elems = document.querySelectorAll(".body a");
     for(var i = 0; i < elems.length; i++){
-        console.log(elems[i].innerHTML);
         if(elems[i].innerHTML.substr(0,8) == "&gt;&gt;"){
             elems[i].onclick = null;
             elems[i].addEventListener("click", showQuote);
@@ -160,7 +159,14 @@ function onAJAXResult(e){
 //Gives an ID to every post that has one.
 function colorId(){
     var ids = document.getElementsByClassName("posteruid");
+    var color;
     for(var i = 0; i < ids.length; i++){
+        color = ids[i].innerHTML.match(/([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i);
+        if(parseInt(color[1], 16) + parseInt(color[2], 16) + parseInt(color[3], 16) > 425){
+            ids[i].style.color = "black";
+        } else {
+            ids[i].style.color = "white";
+        }
         ids[i].style.background = "#" + ids[i].innerHTML.substr(5,6);
         ids[i].style.borderRadius = "5px";
     }
