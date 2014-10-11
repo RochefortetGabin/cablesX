@@ -174,7 +174,12 @@ if(document.location.href.indexOf("/res/") != -1){
         if(G.subject.innerHTML === ""){
             G.subject = document.querySelector('label[for="delete_' + G.threadNumber + '"] > .name').textContent;
         } else {
-            G.subject = G.subject.innerHTML.match(/^(.*)<br>/)[0].replace(/<[^>]*>/g, "").replace("&gt;", ">").replace("&lt;", "<").substring(0,50) + "..."; 
+            var subject = G.subject.innerHTML.match(/^(.*)<br>/);
+            if(subject){
+                G.subject = subject[0].replace(/<[^>]*>/g, "").replace("&gt;", ">").replace("&lt;", "<").substring(0,50) + "..."; 
+            } else {
+                G.subject = G.subject.textContent.substring(0,50) + "...";
+            }
         }
     }
     quotes();
