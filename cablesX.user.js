@@ -52,23 +52,66 @@ function quotes(){
 
 //Returns a lighter color than the one that's given as parameter.
 function lighter(s){
-    var r, g, b;
-    r = parseInt(s.substring(4,7))+5;
-    g = parseInt(s.substring(9,12))+5;
-    b = parseInt(s.substring(14,17))+5;
-    if(r > 255){
-        r = 255;
+    var color = asRGB(s);
+    if(!color)
+        return false;
+    color.r += 5;
+    color.g += 5;
+    color.b += 5;
+    if(color.r > 255){
+        color.r = 255;
     }
-    if(g > 255){
-        g = 255;
+    if(color.g > 255){
+        color.g = 255;
     }
-    if(b > 255){
-        b = 255;
+    if(color.b > 255){
+        color.b = 255;
     }
-    if(r == 255 && g == 255 && b == 255){
+    if(color.r == 255 && color.g == 255 && color.b == 255){
         return false;
     }
-    return "rgb("+r+", "+g+", "+b+")";
+    return "rgb("+color.r+", "+color.g+", "+color.b+")";
+}
+
+function asRGB(color){
+    return asRGBFromHex(color) || asRGBFromRGB(color) || asRGBFromRGBA(color) || asRGBFromName(color);
+}
+
+function asRGBFromRGB(color) {
+    color = color.match(/([0-9]{1,3})/g);
+    if (color.length >= 3) {
+        return {'r': parseInt(color[0]),
+                'g': parseInt(color[1]),
+                'b': parseInt(color[2]),
+                "original": color}
+    }
+    return null;
+}
+
+function asRGBFromRGBA(color) {
+    if (color.match("^rgba\\(([0-9]{1,3},){3}(1|0(\\.[0-9]{1,256}){0,1})\\)$")) {
+        color = color.match(/([0-9]{1,3}),/g);
+        return asRGBFromRGB("rgb(" + color[0] + ',' + color[1] + ',' + color[2] + ")");
+    } else {
+        return null;
+    }
+}
+
+function asRGBFromHex(color) {
+    if (color.match("^#[0-9a-fA-F]{3}$") != null)
+        color = "#" + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+    if (color.match("^#[0-9a-fA-F]{6}$") != null)
+        return {'r': parseInt(color.substr(1, 2), 16),
+                'g': parseInt(color.substr(3, 2), 16),
+                'b': parseInt(color.substr(5, 2), 16),
+                "original": color};
+    else
+        return null;
+}
+
+function asRGBFromName(color) {
+    color = ({ "AliceBlue": "#F0F8FF", "AntiqueWhite": "#FAEBD7", "Aqua": "#00FFFF", "Aquamarine": "#7FFFD4", "Azure": "#F0FFFF", "Beige": "#F5F5DC", "Bisque": "#FFE4C4", "Black": "#000000", "BlanchedAlmond": "#FFEBCD", "Blue": "#0000FF", "BlueViolet": "#8A2BE2", "Brown": "#A52A2A", "BurlyWood": "#DEB887", "CadetBlue": "#5F9EA0", "Chartreuse": "#7FFF00", "Chocolate": "#D2691E", "Coral": "#FF7F50", "CornflowerBlue": "#6495ED", "Cornsilk": "#FFF8DC", "Crimson": "#DC143C", "Cyan": "#00FFFF", "DarkBlue": "#00008B", "DarkCyan": "#008B8B", "DarkGoldenRod": "#B8860B", "DarkGray": "#A9A9A9", "DarkGreen": "#006400", "DarkKhaki": "#BDB76B", "DarkMagenta": "#8B008B", "DarkOliveGreen": "#556B2F", "Darkorange": "#FF8C00", "DarkOrchid": "#9932CC", "DarkRed": "#8B0000", "DarkSalmon": "#E9967A", "DarkSeaGreen": "#8FBC8F", "DarkSlateBlue": "#483D8B", "DarkSlateGray": "#2F4F4F", "DarkTurquoise": "#00CED1", "DarkViolet": "#9400D3", "DeepPink": "#FF1493", "DeepSkyBlue": "#00BFFF", "DimGray": "#696969", "DodgerBlue": "#1E90FF", "Feldspar": "#D19275", "FireBrick": "#B22222", "FloralWhite": "#FFFAF0", "ForestGreen": "#228B22", "Fuchsia": "#FF00FF", "Gainsboro": "#DCDCDC", "GhostWhite": "#F8F8FF", "Gold": "#FFD700", "GoldenRod": "#DAA520", "Gray": "#808080", "Green": "#008000", "GreenYellow": "#ADFF2F", "HoneyDew": "#F0FFF0", "HotPink": "#FF69B4", "IndianRed": "#CD5C5C", "Indigo": "#4B0082", "Ivory": "#FFFFF0", "Khaki": "#F0E68C", "Lavender": "#E6E6FA", "LavenderBlush": "#FFF0F5", "LawnGreen": "#7CFC00", "LemonChiffon": "#FFFACD", "LightBlue": "#ADD8E6", "LightCoral": "#F08080", "LightCyan": "#E0FFFF", "LightGoldenRodYellow": "#FAFAD2", "LightGrey": "#D3D3D3", "LightGreen": "#90EE90", "LightPink": "#FFB6C1", "LightSalmon": "#FFA07A", "LightSeaGreen": "#20B2AA", "LightSkyBlue": "#87CEFA", "LightSlateBlue": "#8470FF", "LightSlateGray": "#778899", "LightSteelBlue": "#B0C4DE", "LightYellow": "#FFFFE0", "Lime": "#00FF00", "LimeGreen": "#32CD32", "Linen": "#FAF0E6", "Magenta": "#FF00FF", "Maroon": "#800000", "MediumAquaMarine": "#66CDAA", "MediumBlue": "#0000CD", "MediumOrchid": "#BA55D3", "MediumPurple": "#9370D8", "MediumSeaGreen": "#3CB371", "MediumSlateBlue": "#7B68EE", "MediumSpringGreen": "#00FA9A", "MediumTurquoise": "#48D1CC", "MediumVioletRed": "#C71585", "MidnightBlue": "#191970", "MintCream": "#F5FFFA", "MistyRose": "#FFE4E1", "Moccasin": "#FFE4B5", "NavajoWhite": "#FFDEAD", "Navy": "#000080", "OldLace": "#FDF5E6", "Olive": "#808000", "OliveDrab": "#6B8E23", "Orange": "#FFA500", "OrangeRed": "#FF4500", "Orchid": "#DA70D6", "PaleGoldenRod": "#EEE8AA", "PaleGreen": "#98FB98", "PaleTurquoise": "#AFEEEE", "PaleVioletRed": "#D87093", "PapayaWhip": "#FFEFD5", "PeachPuff": "#FFDAB9", "Peru": "#CD853F", "Pink": "#FFC0CB", "Plum": "#DDA0DD", "PowderBlue": "#B0E0E6", "Purple": "#800080", "Red": "#FF0000", "RosyBrown": "#BC8F8F", "RoyalBlue": "#4169E1", "SaddleBrown": "#8B4513", "Salmon": "#FA8072", "SandyBrown": "#F4A460", "SeaGreen": "#2E8B57", "SeaShell": "#FFF5EE", "Sienna": "#A0522D", "Silver": "#C0C0C0", "SkyBlue": "#87CEEB", "SlateBlue": "#6A5ACD", "SlateGray": "#708090", "Snow": "#FFFAFA", "SpringGreen": "#00FF7F", "SteelBlue": "#4682B4", "Tan": "#D2B48C", "Teal": "#008080", "Thistle": "#D8BFD8", "Tomato": "#FF6347", "Turquoise": "#40E0D0", "Violet": "#EE82EE", "VioletRed": "#D02090", "Wheat": "#F5DEB3", "White": "#FFFFFF", "WhiteSmoke": "#F5F5F5", "Yellow": "#FFFF00", "YellowGreen": "#9ACD32"})[color];
+    return color ? asRGBFromHex(color) : null;
 }
 
 //Moves the quote inside the post that is quoting it
@@ -167,24 +210,21 @@ function showPostById(e){
 //Gives an ID to every post that has one.
 function colorId(){
     var ids = document.getElementsByClassName("posteruid");
-    var color;
+    var styleElems = {};
     for(var i = 0; i < ids.length; i++){
-        color = ids[i].innerHTML.match(/([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i);
-        if(parseInt(color[1], 16) + parseInt(color[2], 16) + parseInt(color[3], 16) > 425){
-            ids[i].style.color = "black";
-        } else {
-            ids[i].style.color = "white";
-        }
-        ids[i].style.background = "#" + ids[i].innerHTML.substr(5,6);
-        ids[i].style.borderRadius = "5px";
         ids[i].addEventListener("click", showPostById);
+        if (styleElems[ids[i].classList[1]])
+            continue;
+        styleElems[ids[i].classList[1]] = document.createElement("style");
+        color = ids[i].innerHTML.match(/([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i);
+        styleElems[ids[i].classList[1]].innerHTML = "." + ids[i].classList[1] + " {\
+            color: " + (parseInt(color[1], 16) + parseInt(color[2], 16) + parseInt(color[3], 16) > 425 ? "black" : "white") + ";\
+            background: #" + ids[i].innerHTML.substr(5,6) + ";\
+            border-radius: 5px;\
+        }";
+        document.head.appendChild(styleElems[ids[i].classList[1]]);
     }
 }
-
-G = {
-    "threadNumber": 0,
-    "threadBody": null,
-};
 
 //Sets the title
 function setTitle(){
@@ -214,7 +254,6 @@ function setTitle(){
 function mouseEnter(e){
     e.target.imgHover = document.createElement("img");
     e.target.imgHover.src = e.target.parentNode.href;
-    console.log(e.target.imgHover.src);
     e.target.imgHover.style.position = "fixed";
     document.body.appendChild(e.target.imgHover);
 }
@@ -229,7 +268,6 @@ function mouseLeave(e){
 }
 
 function managePopupListeners(fn){
-    console.log(fn);
     var elems = document.getElementsByClassName("post-image");
     for(var i = 0; i < elems.length; i++){
         fn.call(elems[i], "mouseenter", mouseEnter);
@@ -268,6 +306,31 @@ function settings(){
 
     document.getElementById("settingsScreen").appendChild(section);
 }
+
+function onAjaxEvent(evt) {
+    if (evt.target.readyState == 4) {
+        var url = evt.target.responseURL;
+        if (localStorage.getItem(url) != evt.target.responseText) {
+            localStorage.setItem(url, evt.target.responseText);
+            document.querySelector("a[href='/" + url[url.length - 2] + "/']").innerHTML += "!";
+            console.log("dicks");
+        }
+    }
+}
+
+availableBoards = ['f', 'g', 'int', 'ac', 'av', 'bd', 'j', '6'];
+
+for (var i = 0; i < availableBoards.length; i++) {
+    var req = new XMLHttpRequest();
+    req.addEventListener("load", onAjaxEvent);
+    req.open("GET", "https://cable6.net/" + availableBoards[i]);
+    req.send();
+}
+
+G = {
+    "threadNumber": 0,
+    "threadBody": null,
+};
 
 G.boardName = document.location.pathname.match("^/[a-z0-9]*/");
 
