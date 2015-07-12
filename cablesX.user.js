@@ -327,9 +327,26 @@ function alertBoardChanged(boardName) {
         return;
     }
     for (var i = 0; i < availableBoards.length; i++) {
-        console.log("true", true, availableBoards[i], localStorage.getItem(availableBoards[i]));
         if (localStorage.getItem(availableBoards[i]) === "true")
             document.querySelector("a[href='" + availableBoards[i] + "']").innerHTML += "!";
+    }
+}
+
+function onPost() {
+    localStorage.setItem("lastPost", new Date());
+}
+
+function updateCooldownIndicator () {
+    if (!localStorage.getItem("lastPost"))
+        return clearInterval(cooldownIndicatorInterval);
+
+    var t = parseInt((new Date() - new Date(localStorage.getItem("lastPost"))) / 1000);
+    var elem = document.querySelector("body > form:nth-child(6) > table:nth-child(6) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(2) > input:nth-child(2)");
+    if (t < 10) {
+        elem.value = 10 - t;
+    } else {
+        elem.value = "Poster";
+        clearInterval(cooldownIndicatorInterval);
     }
 }
 
@@ -363,3 +380,7 @@ if(document.location.href.indexOf("/res/") != -1){
 stickyMenu();
 colorId();
 setTimeout(settings, 1000);
+setTimeout(function() {
+    document.querySelector("body > form:nth-child(6)").addEventListener("submit", onPost);
+    cooldownIndicatorInterval = setInterval(updateCooldownIndicator, 1000);
+}, 1000);
