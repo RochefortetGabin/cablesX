@@ -4,7 +4,7 @@
 // @include     http*://cable6.net/*
 // @run-at      DOMContentLoaded
 // @version     0.14
-// @grant       none
+// @grant       GM_xmlhttpRequest
 // @downloadURL https://github.com/RochefortetGabin/cablesX/raw/master/cablesX.user.js
 // @icon        data:image/png;base64,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
 // ==/UserScript==
@@ -84,7 +84,7 @@ function asRGBFromRGB(color) {
         return {'r': parseInt(color[0]),
                 'g': parseInt(color[1]),
                 'b': parseInt(color[2]),
-                "original": color}
+                "original": color};
     }
     return null;
 }
@@ -99,9 +99,9 @@ function asRGBFromRGBA(color) {
 }
 
 function asRGBFromHex(color) {
-    if (color.match("^#[0-9a-fA-F]{3}$") != null)
+    if (color.match("^#[0-9a-fA-F]{3}$") !== null)
         color = "#" + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
-    if (color.match("^#[0-9a-fA-F]{6}$") != null)
+    if (color.match("^#[0-9a-fA-F]{6}$") !== null)
         return {'r': parseInt(color.substr(1, 2), 16),
                 'g': parseInt(color.substr(3, 2), 16),
                 'b': parseInt(color.substr(5, 2), 16),
@@ -218,11 +218,7 @@ function colorId(){
             continue;
         styleElems[ids[i].classList[1]] = document.createElement("style");
         color = ids[i].innerHTML.match(/([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i);
-        styleElems[ids[i].classList[1]].innerHTML = "." + ids[i].classList[1] + " {\
-            color: " + (parseInt(color[1], 16) + parseInt(color[2], 16) + parseInt(color[3], 16) > 425 ? "black" : "white") + ";\
-            background: #" + ids[i].innerHTML.substr(5,6) + ";\
-            border-radius: 5px;\
-        }";
+        styleElems[ids[i].classList[1]].innerHTML = "." + ids[i].classList[1] + " {\ncolor: " + (parseInt(color[1], 16) + parseInt(color[2], 16) + parseInt(color[3], 16) > 425 ? "black" : "white") + ";\nbackground: #" + ids[i].innerHTML.substr(5,6) + ";\nborder-radius: 5px;\n}";
         document.head.appendChild(styleElems[ids[i].classList[1]]);
     }
 }
@@ -344,6 +340,78 @@ function onPost() {
     localStorage.setItem("lastPost", new Date());
 }
 
+function youtubeify() {
+    var links = document.querySelectorAll("a");
+    for (var i = 0; i < links.length; i++) {
+        if (links[i].href.match(/http(s{0,1}):\/\/(www\.){0,1}youtu((\.be\/)|(be\.com\/watch\?))/)) {
+            if (G.youtubeLinks[links[i]]) {
+                appendYoutubeTitle(G.youtubeLinks[links[i]], links[i]);
+            } else {
+                GM_xmlhttpRequest ( {
+                    method:     "GET",
+                    url:        links[i].href,
+                    onload:     onYoutubeAnswer(links[i])
+                });
+            }
+        }
+    }
+}
+
+function onYoutubeAnswer(elem) {
+    return (function (response) {
+        var doc;
+        if (response.responseXML !== null) {
+            doc = response.responseXML;
+        } else {
+            doc = document.createElement("div");
+            doc.innerHTML = response.responseText;
+        }
+        G.youtubeLinks[elem.href] = doc.getElementsByClassName("watch-title")[0].textContent.trim();
+        appendYoutubeTitle(G.youtubeLinks[elem.href], elem);
+    });
+}
+
+function appendYoutubeTitle(title, elem) {
+    var titleElem = document.createElement("a");
+    titleElem.textContent = title;
+    titleElem.href = getEmbedURL(elem.href);
+    console.log("Embeded url : " + titleElem.href);
+    titleElem.addEventListener("click", onYoutubeTitleClick);
+    console.log("Added evt listener");
+    elem.parentNode.insertBefore(titleElem, elem.nextSibling);
+    console.log("Node inserted");
+    elem.parentNode.insertBefore(document.createTextNode(" - "), titleElem);
+}
+
+function onYoutubeTitleClick(evt) {
+    var elem = evt.target;
+    if (elem.opened)
+        elem.parentNode.removeChild(elem.iframe);
+    else {
+        if (!elem.iframe) {
+            var iframe = document.createElement("iframe");
+            elem.iframe = iframe;
+            iframe.width = 560;
+            iframe.height = 315;
+            iframe.src = elem.href;
+        }
+        elem.parentNode.insertBefore(elem.iframe, elem.nextSibling);
+    }
+    elem.opened = !elem.opened;
+    return evt.preventDefault();
+}
+
+function getEmbedURL(url) {
+    console.log("EmbedURL : " + url);
+    try {
+        var baseURL = "https://www.youtube.com/embed/";
+        if (url.match(new RegExp("youtube\.com/watch\?")))
+            return baseURL + url.match(new RegExp("v=[a-zA-Z0-9_-]{6,}"))[0].substr(2);
+        else if (url.match(/youtu\.be\//))
+            return baseURL + url.match(new RegExp("\.be/[a-zA-Z0-9_-]{6,}"))[0].substr(4);
+    } catch(Exception){}
+}
+
 function updateCooldownIndicator () {
     if (!localStorage.getItem("lastPost"))
         return clearInterval(cooldownIndicatorInterval);
@@ -370,6 +438,7 @@ for (var i = 0; i < availableBoards.length; i++) {
 G = {
     "threadNumber": 0,
     "threadBody": null,
+    "youtubeLinks": JSON.parse(localStorage.getItem("youtubeLinks")) || {}
 };
 
 G.boardName = document.location.pathname.match("^/[a-z0-9]*/");
@@ -388,7 +457,12 @@ stickyMenu();
 colorId();
 setTimeout(settings, 1000);
 submitReplyButton = getSubmitReplyButton();
+youtubeify();
 setTimeout(function() {
     submitReplyButton.addEventListener("click", onPost);
     cooldownIndicatorInterval = setInterval(updateCooldownIndicator, 1000);
 }, 1000);
+
+window.onbeforeunload = function() {
+    localStorage.setItem("youtubeLinks", JSON.stringify(G.youtubeLinks));
+};
