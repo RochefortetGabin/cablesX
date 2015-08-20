@@ -25,7 +25,7 @@ function stickyMenu(){
 function quotes(){
     var elems = document.querySelectorAll(".body a");
     for(var i = 0; i < elems.length; i++){
-        if(elems[i].innerHTML.substr(0,8) == "&gt;&gt;"){
+        if(elems[i].innerHTML.substr(0,8) == "&gt;&gt;" && elems[i].innerHTML.substr(8,4) != "&gt;") {
             elems[i].onclick = null;
             elems[i].addEventListener("click", showQuote);
         }
@@ -375,11 +375,8 @@ function appendYoutubeTitle(title, elem) {
     var titleElem = document.createElement("a");
     titleElem.textContent = title;
     titleElem.href = getEmbedURL(elem.href);
-    console.log("Embeded url : " + titleElem.href);
     titleElem.addEventListener("click", onYoutubeTitleClick);
-    console.log("Added evt listener");
     elem.parentNode.insertBefore(titleElem, elem.nextSibling);
-    console.log("Node inserted");
     elem.parentNode.insertBefore(document.createTextNode(" - "), titleElem);
 }
 
@@ -402,7 +399,6 @@ function onYoutubeTitleClick(evt) {
 }
 
 function getEmbedURL(url) {
-    console.log("EmbedURL : " + url);
     try {
         var baseURL = "https://www.youtube.com/embed/";
         if (url.match(new RegExp("youtube\.com/watch\?")))
